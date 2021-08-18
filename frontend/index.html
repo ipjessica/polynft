@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <title>PolyNFT</title>
+</head>
+
+<body class="bg-dark">
+
+    <nav class="navbar navbar-expand-lg navbar-dark">    
+        <a class="navbar-brand btn btn-outline rounded-pill" href="#">PolyNFT</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="mx-2 d-inline flex-md-fill">
+                <input type="search" class="form-control bg-transparent mr-sm-2 rounded-pill" placeholder="Search by item or creator">
+            </form>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" id="btnExplore" href="#">Explore</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="btnMyItems" href="#">My NFTs</a>
+            </li>
+          </ul>
+        <!-- make a button to login--> 
+          <div class="d-flex">
+            <button class="btn btn-primary rounded-pill my-2 my-sm-0 mr-md-2" id="btnOpenCreateItem">CREATE</button>
+            <button class="btn btn-outline rounded-pill my-2 my-sm-0" id="btnConnect">Connect Wallet</button>
+            <!--<button class="btn btn-outline rounded-pill my-2 my-sm-0" id="btnUserInfo">Profile</button>-->
+          </div>
+          <ul class="navbar-nav mr-auto">
+              <li class="profile">
+                  <a class="nav-link" id="btnUserInfo" href="#">Profile</a>
+              </li>
+          </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+      <div class="row row-cols-1 row-cols-md-4 mt-5" id="itemsForSale">
+      </div>  
+    </div>    
+
+    <div class="col mb-4" id="marketplaceItemTemplate">
+        <div class="card h-100 border border-3 border-light bg-transparent text-light">
+            <nav class="card-header navbar navbar-dark text-light p-1">
+                <img width="30" height="30" class="d-inline-block align-top rounded-circle" src="" alt="">
+                <span></span>
+            </nav>
+            
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body d-flex align-items-end">
+                <div class="w-100">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+                    <button class="btn btn-primary btn-block"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col mb-4" id="itemTemplate">
+        <div class="card h-100 border border-3 border-light bg-transparent text-light">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body d-flex align-items-end">
+                <div class="w-100">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text"></p>
+
+                    <div class="input-group mb-3">
+                        <input type="number" min="1" step="1" class="form-control" placeholder="Price"/>
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" type="button">Put for sale</button>
+                        </div>
+                      </div>
+                </div>
+            </div>
+          </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userInfo" tabindex="-1">
+        <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+            <h5 class="modal-title">User Profile</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="mb-3">
+                    <label for="txtUsername">Username</label>
+                    <input type="text" class="form-control" id="txtUsername" required placeholder="Enter username">
+                </div>
+
+                <div class="mb-3">
+                    <label for="txtEmail">Email address</label>
+                    <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp" placeholder="Enter email">
+                    <small id="emailHelp" class="form-text text-muted">Optional</small>
+                </div>
+
+                <img width="50" height="50" src="" id="imgAvatar" alt="">
+
+                <div class="mb-3">
+                    <!-- <label for="fileAvatar class="form-label">Select Avatar</label> -->
+                    <label for="fileAvatar">Select Avatar</label>
+                    <input type="file" class="form-control-file" id="fileAvatar">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" id="btnLogout" class="btn btn-secondary" data-bs-dismiss="modal">Log Out</button>
+            <button type="button" id="btnCloseUserInfo" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="btnSaveUserInfo" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+        <div class="modal fade" id="createItem" tabindex="-1">
+            <div class="modal-dialog">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                <h5 class="modal-title">Create Item</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="txtUsername">Name</label>
+                        <input type="text" class="form-control" id="txtCreateItemName" required placeholder="Enter name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="txtCreateItemDescription">Description</label>
+                        <textarea class="form-control" id="txtCreateItemDescription" cols="30" rows="5" placeholder="Enter description"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="txtUsername">Price</label>
+                        <input type="number" min="1" step="1" id="numCreateItemPrice" placeholder="Enter price" required class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="selectCreateItemStatus">Status</label>
+                        <select class="form-control" id="selectCreateItemStatus">
+                            <!-- <ul class="nav nav-pills nav-fill">
+                                <li class="nav-item">
+                                  <a class="nav-link active" aria-current="page" href="#">Active</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#">Much longer nav link</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#">Link</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                                </li>
+                            </ul> -->
+                            <option value="0">Not for sale</option>
+                            <option value="1">Instant buy</option>
+                            <option value="2">Accept offers</option> <!-- bidding -->
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fileCreateItemFile">Select File</label>
+                        <input type="file" class="form-control-file" id="fileCreateItemFile">
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                <button type="button" id="btnCloseCreateItem" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnCreateItem" class="btn btn-primary">CREATE!</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="userItems" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                <h5 class="modal-title">My Items</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body row row-cols-1 row-cols-md-4 mt-5" id="userItemsList">
+                </div>
+                <div class="modal-footer">
+                <button type="button" id="btnCloseUserItems" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+    <footer>
+        <div>
+            <a href="https://twitter.com/home" target="_blank" class="social-icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="bi bi-twitter" viewBox="0 0 18 16" style="fill-opacity: 0.2;">
+                    <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                </svg>
+            </a>
+            <a href="https://telegram.com/" target="_blank" class="social-icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" class="bi bi-telegram" viewBox="0 0 16 14" style="fill-opacity: 0.2;">
+                    <path d="M15.9513 1.29916L13.5438 13.1556C13.377 13.997 12.8902 14.1987 12.21 13.8093L8.542 10.979L6.76804 12.7662C6.56797 12.9748 6.40125 13.1556 6.03445 13.1556C5.55428 13.1556 5.63431 12.9679 5.47425 12.495L4.20714 8.19051L0.572523 7.00834C-0.214421 6.76495 -0.22109 6.20168 0.745918 5.7914L14.9243 0.0891779C15.5711 -0.209841 16.1914 0.256072 15.9446 1.29221L15.9513 1.29916Z"></path>
+                </svg>
+            </a>
+            <a href="https://discord.com/" target="_blank" class="social-icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" class="bi bi-discord" viewBox="0 0 18 13" style="fill-opacity: 0.2;">
+                    <path d="M11.5507 0.0036464H11.5624L11.5612 0L11.5507 0.0036464ZM11.5108 0.0176323L11.5507 0.0036464H11.5252L11.5108 0.0176323ZM11.5039 0.0243315L11.5108 0.0176323L11.4917 0.0243072L11.5039 0.0243315ZM11.5039 0.0243315L11.2748 0.246719C13.8446 0.975936 15.088 2.11473 15.088 2.11473C13.4318 1.30287 11.9393 0.896938 10.4467 0.732864C9.36818 0.56879 8.28967 0.65508 7.37851 0.732864H7.13058C6.54793 0.732864 5.30826 0.975936 3.64711 1.62616C3.06818 1.87287 2.73595 2.03452 2.73595 2.03452C2.73595 2.03452 3.9781 0.816724 6.71529 0.166505L6.54793 0.00243113C6.54793 0.00243113 4.47521 -0.075352 2.2376 1.54594C2.2376 1.54594 0 5.36704 0 10.0778C0 10.0778 1.23967 12.1925 4.64008 12.2727C4.64008 12.2727 5.13595 11.6249 5.63802 11.0549C3.72893 10.4861 2.98512 9.34857 2.98512 9.34857C2.98512 9.34857 3.15124 9.42878 3.40041 9.59164H3.47479C3.50979 9.59164 3.52722 9.60778 3.54568 9.62487C3.54684 9.62595 3.548 9.62702 3.54917 9.6281V9.63539C3.56901 9.65484 3.58636 9.67185 3.62355 9.67185C3.6596 9.68642 3.69564 9.70096 3.73164 9.71548C4.10416 9.8658 4.47123 10.0139 4.77645 10.158C5.35413 10.4035 6.09669 10.6478 7.00785 10.8094C8.16074 10.9735 9.48223 11.0525 10.9872 10.8094L11.0353 10.7988L11.0353 10.7988C11.7631 10.6384 12.4908 10.4779 13.2186 10.1592C13.3516 10.0923 13.4931 10.0255 13.6419 9.95511C14.0339 9.76978 14.4769 9.56038 14.9504 9.26349C14.9504 9.26349 14.2066 10.4011 12.2169 10.9699C12.626 11.5362 13.2025 12.1852 13.2025 12.1852C15.9898 12.1255 17.3804 10.6948 17.8328 10.2295C17.9325 10.1269 17.9866 10.0713 18 10.0875C18 5.38405 15.75 1.55566 15.75 1.55566C13.7464 0.097178 11.8701 0.0257804 11.5039 0.0243315ZM6.13886 5.36701C7.00663 5.36701 7.70828 6.09623 7.70828 6.98952C7.70828 7.88889 7.00167 8.61811 6.1339 8.61811C5.26613 8.61811 4.55952 7.88889 4.55952 6.99682C4.55952 6.09745 5.26613 5.37066 6.1339 5.37066L6.13886 5.36701ZM11.7707 5.36701C12.6422 5.36701 13.3451 6.09623 13.3451 6.98952C13.3451 7.88889 12.6384 8.61811 11.7707 8.61811C10.9029 8.61811 10.1963 7.88889 10.1963 6.99682C10.1988 6.09745 10.9066 5.37066 11.7707 5.37066V5.36701Z"></path>
+                </svg>
+            </a>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+    <script src="abi.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
