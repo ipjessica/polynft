@@ -9,6 +9,17 @@
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <title>PolyNFT</title>
+    <style>
+        /* @import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap'); */
+        /* @import url('https://fonts.googleapis.com/css2?family=Tourney:wght@500&display=swap'); */
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        body {
+            /* font-family: 'Megrim', cursive; */
+            /* font-family: 'Tourney', cursive; */
+            font-family: 'VT323', monospace;
+            font-size: 20px;
+        }
+        </style>
 </head>
 
 <body class="bg-dark">
@@ -20,7 +31,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <form class="mx-2 d-inline flex-md-fill">
-                <input type="search" class="form-control bg-transparent mr-sm-2 rounded-pill" placeholder="Search by item or creator">
+                <input type="search" class="form-control bg-transparent mr-sm-2 rounded-pill" placeholder="Search by item or creator" required>
             </form>
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -29,10 +40,13 @@
             <li class="nav-item">
               <a class="nav-link" id="btnMyItems" href="#">My NFTs</a>
             </li>
+            <li class="nav-create">
+              <a class="nav-link" id="btnOpenCreateItem" href="#">CREATE</a>
+            </li>
           </ul>
         <!-- make a button to login--> 
           <div class="d-flex">
-            <button class="btn btn-primary rounded-pill my-2 my-sm-0 mr-md-2" id="btnOpenCreateItem">CREATE</button>
+            <!--<button class="btn btn-primary btn-createItem btn-outline rounded-pill my-2 my-sm-0 mr-md-2" id="btnOpenCreateItem">CREATE</button>-->
             <button class="btn btn-outline rounded-pill my-2 my-sm-0" id="btnConnect">Connect Wallet</button>
             <!--<button class="btn btn-outline rounded-pill my-2 my-sm-0" id="btnUserInfo">Profile</button>-->
           </div>
@@ -50,13 +64,13 @@
     </div>    
 
     <div class="col mb-4" id="marketplaceItemTemplate">
-        <div class="card h-100 border border-3 border-light bg-transparent text-light">
+        <div class="card h-100 border border-2 border-light bg-transparent text-light">
             <nav class="card-header navbar navbar-dark text-light p-1">
                 <img width="30" height="30" class="d-inline-block align-top rounded-circle" src="" alt="">
                 <span></span>
             </nav>
             
-            <img src="..." class="card-img-top" alt="...">
+            <img src="..." class="card-img-top img-fluid" alt="...">
             <div class="card-body d-flex align-items-end">
                 <div class="w-100">
                     <h5 class="card-title"></h5>
@@ -69,7 +83,7 @@
 
     <div class="col mb-4" id="itemTemplate">
         <div class="card h-100 border border-3 border-light bg-transparent text-light">
-            <img src="..." class="card-img-top" alt="...">
+            <img src="..." class="card-img-top img-fluid" alt="...">
             <div class="card-body d-flex align-items-end">
                 <div class="w-100">
                     <h5 class="card-title"></h5>
@@ -92,7 +106,7 @@
         <div class="modal-content bg-dark text-light">
             <div class="modal-header">
             <h5 class="modal-title">User Profile</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
@@ -133,7 +147,7 @@
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
                 <h5 class="modal-title">Create Item</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
@@ -141,7 +155,7 @@
 
                     <div class="mb-3">
                         <label for="txtUsername">Name</label>
-                        <input type="text" class="form-control" id="txtCreateItemName" required placeholder="Enter name">
+                        <input type="text" class="form-control" id="txtCreateItemName" required placeholder="Enter name" autocomplete="off">
                     </div>
 
                     <div class="mb-3">
@@ -151,13 +165,13 @@
 
                     <div class="mb-3">
                         <label for="txtUsername">Price</label>
-                        <input type="number" min="1" step="1" id="numCreateItemPrice" placeholder="Enter price" required class="form-control">
+                        <input type="number" min="1" step="1" id="numCreateItemPrice" placeholder="Enter price in wei" required class="form-control">
                     </div>
 
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="selectCreateItemStatus">Status</label>
                         <select class="form-control" id="selectCreateItemStatus">
-                            <!-- <ul class="nav nav-pills nav-fill">
+                            <ul class="nav nav-pills nav-fill">
                                 <li class="nav-item">
                                   <a class="nav-link active" aria-current="page" href="#">Active</a>
                                 </li>
@@ -170,11 +184,25 @@
                                 <li class="nav-item">
                                   <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                                 </li>
-                            </ul> -->
-                            <option value="0">Not for sale</option>
+                            </ul>
+                            <option value="0">Not for sale</option> //mint but not for sale
                             <option value="1">Instant buy</option>
-                            <option value="2">Accept offers</option> <!-- bidding -->
+                            <option value="2">Accept offers</option> //bid
                         </select>
+                    </div> -->
+
+                    <div class="mb-3">
+                        <label for="selectCreateItemStatus">Status</label><br>
+                            <!-- <input type="radio" class="btn-check" name="itemStatus" id="selectCreateItemStatus" autocomplete="off">
+                            <label class="btn btn-secondary" for="selectCreateItemStatus">Not For Sale</label> -->
+                            <input type="radio" class="btn-check" name="itemStatus" id="selectCreateItemStatus" autocomplete="off">
+                            <label class="btn" for="selectCreateItemStatus">Not For Sale</label>
+
+                            <input type="radio" class="btn-check" name="itemStatus" id="selectCreateItemStatus" autocomplete="off">
+                            <label class="btn" for="selectCreateItemStatus">Instant Buy</label>
+
+                            <input type="radio" class="btn-check" name="itemStatus" id="selectCreateItemStatus" autocomplete="off">
+                            <label class="btn" for="selectCreateItemStatus">Accept Offers</label>
                     </div>
 
                     <div class="mb-3">
@@ -184,8 +212,8 @@
                     
                 </div>
                 <div class="modal-footer">
-                <button type="button" id="btnCloseCreateItem" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="btnCreateItem" class="btn btn-primary">CREATE!</button>
+                <button type="button" id="btnCloseCreateItem" class="btn" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnCreateItem" class="btn btn-createItem">CREATE!</button>
                 </div>
             </div>
             </div>
@@ -197,14 +225,14 @@
             <div class="modal-content bg-dark text-light">
                 <div class="modal-header">
                 <h5 class="modal-title">My Items</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                 <div class="modal-body row row-cols-1 row-cols-md-4 mt-5" id="userItemsList">
                 </div>
                 <div class="modal-footer">
-                <button type="button" id="btnCloseUserItems" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="btnCloseUserItems" class="btn" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
             </div>
