@@ -1,12 +1,11 @@
-Moralis.initialize("UVqjBTfQSRy0TkqXylWBD7EqDGNECAg0S3kDWdeR");
-Moralis.serverURL = "https://qjynwohlpcsh.moralis.io:2053/server"
-const TOKEN_CONTRACT_ADDRESS = "0xCeC8430EA9BE7816Ad0EF651f88430AC6E6E6472";
-const MARKETPLACE_CONTRACT_ADDRESS = "0x8A5A83F1533E8B0697AAf44734e6C11b35Ad2923";
+const { Moralis } = require("moralis/lib/browser/Parse");
 
-/* Moralis.initialize("YtabraJIWgTdmW25DEGmDc96Un61MPJpH3fMjGVp");
-Moralis.serverURL = 'https://xuaf5rhqfcoy.moralisweb3.com:2053/server';
-const TOKEN_CONTRACT_ADDRESS = "0x4C69E2A3b64cF64621Ae4b3faF0b8dE694B317C1";
-const MARKETPLACE_CONTRACT_ADDRESS = "0x6B2FFE29B18A4a797B40Eab5E53D5a62588FbF5E"; */
+const serverUrl = "https://wkchcfxojwcu.usemoralis.com:2053/server";
+const appId = "CL3tQvRMCafhZpBWpUDPOj5bsMEaRhrbpUubkcat";
+/* Moralis.initialize("UVqjBTfQSRy0TkqXylWBD7EqDGNECAg0S3kDWdeR");
+Moralis.serverURL = "https://qjynwohlpcsh.moralis.io:2053/server";
+const TOKEN_CONTRACT_ADDRESS = "0xCeC8430EA9BE7816Ad0EF651f88430AC6E6E6472";
+const MARKETPLACE_CONTRACT_ADDRESS = "0x8A5A83F1533E8B0697AAf44734e6C11b35Ad2923"; */
 
 init = async () => {
     hideElement(userItemsSection);
@@ -92,7 +91,21 @@ initUser = async () => {
 }
 
 // login feature
-login = async () => {
+async function login() {
+    if (!user) {
+        try {
+            user = await Moralis.authenticate({ signingMessage: "Hello World!" })
+            initApp();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    else {
+        Moralis.enableWeb3();
+        initApp();
+    }
+}
+/* login = async () => {
     try {
         // bring up metamask, ask them to sign in
         await Moralis.Web3.authenticate();
@@ -100,7 +113,58 @@ login = async () => {
     } catch (error) {
         alert(error)
     }
+} */
+
+function initApp() {
+    // function displays the interface of the dApp to the users
+    document.querySelector("#app").style.display = "block";
+    // adds the option to submit the information needed to lazy mint the NFT through an onclick event
+    document.querySelector("#submit_button").onclick = submit;
 }
+
+// minting logic
+async function submit() {
+    // fetch image data from user-uploaded file
+    const input = document.querySelector('#input_image');
+    let data = input.files[0]
+    // data used to upload image to IPFS 
+    const imageFile = new Moralis.File(data.name, data)
+    await imageFile.saveIPFS();
+    // fetch IPFS image hash, save to variable
+    let imageHash = imageFile.hash();
+
+    // using name, description, and image hash, create a metadata object
+    let metadata = {
+        name: document.querySelector('#input_name').value,
+        description: document.querySelector('#input_description').value,
+        image: "/ipfs/" + imageHash
+    }
+    console.log(metadata);
+    // with metadata object, stringify to JSON format
+    const jsonFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(metadata))});
+    // upload to IPFS with saveIPFS moralis function
+    await jsonFile.saveIPFS();
+
+    let metadataHash = jsonFile.hash();
+    // fetch IPFS hash, use when calling Moralis.Plugins.rarible.lazyMint()
+    console.log(jsonFile.ipfs())
+    let res = await Moralis.Plugins.rarible.lazyMint({
+        chain: 'rinkeby',
+        userAddress: user.get('ethAddress'),
+        tokenType: 'ERC721',
+        tokenUri: 'ipfs://' + metadataHash,
+        royaltiesAmount: 5, // 0.05% royalty. Optional
+    })
+    console.log(res);
+    // display success message along with link to NFT
+    document.querySelector('#success_message').innerHTML = 
+        `NFT minted. <a href="https://rinkeby.rarible.com/token/${res.data.result.tokenAddress}:${res.data.result.tokenId}">View NFT`;
+    document.querySelector('#success_message').style.display = "block";
+    setTimeout(() => {
+        document.querySelector('#success_message').style.display = "none";
+    }, 5000)
+}
+
 
 logout = async () => {
     await Moralis.User.logOut();
